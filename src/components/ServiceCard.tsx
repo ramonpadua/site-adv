@@ -1,4 +1,4 @@
-import { Briefcase, ShieldCheck, Settings, ChevronRight } from 'lucide-react'
+import { Briefcase, ShieldCheck, Cog, HelpCircle, ChevronRight } from 'lucide-react'
 import {
   Card,
   CardContent,
@@ -9,17 +9,18 @@ import {
 } from '@/components/ui/card'
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer'
 import { cn } from '@/lib/utils'
-import type { Service } from '@/lib/data'
+import type { Servico } from '@/services/servicos'
+import { Link } from 'react-router-dom'
 
-const IconMap = {
+const IconMap: Record<string, any> = {
   briefcase: Briefcase,
-  shield: ShieldCheck,
-  settings: Settings,
+  'shield-check': ShieldCheck,
+  cog: Cog,
 }
 
-export function ServiceCard({ service, index }: { service: Service; index: number }) {
+export function ServiceCard({ service, index }: { service: Servico; index: number }) {
   const { ref, isIntersecting } = useIntersectionObserver<HTMLDivElement>({ threshold: 0.1 })
-  const Icon = IconMap[service.icon]
+  const Icon = IconMap[service.icone] || HelpCircle
 
   return (
     <div
@@ -32,21 +33,21 @@ export function ServiceCard({ service, index }: { service: Service; index: numbe
           <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
             <Icon className="w-6 h-6" />
           </div>
-          <CardTitle className="text-xl font-bold text-foreground">{service.title}</CardTitle>
+          <CardTitle className="text-xl font-bold text-foreground">{service.titulo}</CardTitle>
         </CardHeader>
         <CardContent className="flex-grow">
           <CardDescription className="text-base text-muted-foreground leading-relaxed">
-            {service.description}
+            {service.descricao}
           </CardDescription>
         </CardContent>
         <CardFooter>
-          <a
-            href="#contato"
+          <Link
+            to="/contato"
             className="inline-flex items-center text-sm font-semibold text-primary hover:text-primary/80 transition-colors group/link"
           >
             Saiba Mais
             <ChevronRight className="w-4 h-4 ml-1 group-hover/link:translate-x-1 transition-transform" />
-          </a>
+          </Link>
         </CardFooter>
       </Card>
     </div>

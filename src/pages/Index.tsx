@@ -6,12 +6,13 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer'
 import { cn } from '@/lib/utils'
-import { fetchServicesData, type Service } from '@/lib/data'
+import { getServicos, type Servico } from '@/services/servicos'
 import { ServiceCard } from '@/components/ServiceCard'
+import { Link } from 'react-router-dom'
 
 export default function Index() {
   const [status, setStatus] = useState<'loading' | 'error' | 'empty' | 'success'>('loading')
-  const [services, setServices] = useState<Service[]>([])
+  const [services, setServices] = useState<Servico[]>([])
   const { ref: heroRef, isIntersecting: isHeroVisible } = useIntersectionObserver<HTMLDivElement>({
     threshold: 0.1,
   })
@@ -19,7 +20,7 @@ export default function Index() {
   const loadData = async () => {
     setStatus('loading')
     try {
-      const data = await fetchServicesData()
+      const data = await getServicos()
       if (data.length === 0) {
         setStatus('empty')
       } else {
@@ -44,7 +45,7 @@ export default function Index() {
       <section id="inicio" className="relative min-h-[90vh] flex flex-col justify-center pt-20">
         <div className="absolute inset-0 z-0">
           <img
-            src="https://img.usecurling.com/p/1920/1080?q=executive%20portrait&color=blue&dpr=2"
+            src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=1920"
             alt="Consultant Professional"
             className="w-full h-full object-cover"
           />
@@ -68,13 +69,11 @@ export default function Index() {
                 Resultados sólidos construídos com autoridade e ética.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button
-                  size="lg"
-                  className="text-base px-8 h-14"
-                  onClick={() => scrollToSection('#servicos')}
-                >
-                  Agende uma Consulta
-                  <ArrowRight className="ml-2 w-5 h-5" />
+                <Button size="lg" className="text-base px-8 h-14" asChild>
+                  <Link to="/contato">
+                    Agende uma Consulta
+                    <ArrowRight className="ml-2 w-5 h-5" />
+                  </Link>
                 </Button>
               </div>
             </div>
@@ -90,11 +89,11 @@ export default function Index() {
               </div>
               <div className="flex items-center gap-3 justify-center md:justify-center">
                 <Phone className="w-5 h-5 text-primary-foreground/70" />
-                <span>(11) 9999-9999</span>
+                <span>(11) 99999-9999</span>
               </div>
               <div className="flex items-center gap-3 justify-center md:justify-end">
                 <MapPin className="w-5 h-5 text-primary-foreground/70" />
-                <span>São Paulo, SP</span>
+                <span>São José dos Campos, SP</span>
               </div>
             </div>
           </div>
@@ -213,10 +212,7 @@ export default function Index() {
         </div>
       </section>
 
-      <section
-        id="contato"
-        className="py-24 bg-primary text-primary-foreground relative overflow-hidden"
-      >
+      <section className="py-24 bg-primary text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 z-0 opacity-10">
           <div className="absolute top-0 -left-1/4 w-1/2 h-full bg-white rounded-full blur-[100px]"></div>
           <div className="absolute bottom-0 -right-1/4 w-1/2 h-full bg-white rounded-full blur-[100px]"></div>
@@ -234,15 +230,17 @@ export default function Index() {
               size="lg"
               variant="secondary"
               className="text-primary font-bold px-8 h-14 text-base"
+              asChild
             >
-              Fale com um Especialista
+              <Link to="/contato">Fale com um Especialista</Link>
             </Button>
             <Button
               size="lg"
               variant="outline"
               className="text-primary-foreground border-primary-foreground/30 hover:bg-primary-foreground/10 px-8 h-14 text-base bg-transparent"
+              asChild
             >
-              Ligue (11) 9999-9999
+              <a href="tel:11999999999">Ligue (11) 99999-9999</a>
             </Button>
           </div>
         </div>

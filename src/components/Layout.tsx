@@ -1,12 +1,16 @@
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { Menu, X, Linkedin, Instagram, MapPin, Phone, Mail } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/hooks/use-auth'
 
 export default function Layout() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const location = useLocation()
+  const navigate = useNavigate()
+  const { user, signOut } = useAuth()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,20 +21,33 @@ export default function Layout() {
   }, [])
 
   const navLinks = [
-    { name: 'Início', href: '#inicio' },
-    { name: 'Serviços', href: '#servicos' },
-    { name: 'Sobre', href: '#sobre' },
-    { name: 'Contato', href: '#contato' },
+    { name: 'Início', href: '/#inicio' },
+    { name: 'Serviços', href: '/#servicos' },
+    { name: 'Sobre', href: '/#sobre' },
+    { name: 'Contato', href: '/contato' },
   ]
+  if (user) {
+    navLinks.push({ name: 'Admin', href: '/admin' })
+  }
 
   const scrollToSection = (href: string) => {
     setMobileMenuOpen(false)
-    if (href.startsWith('#')) {
-      const el = document.querySelector(href)
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' })
+    if (href.startsWith('/#')) {
+      const id = href.replace('/', '')
+      if (location.pathname !== '/') {
+        navigate(href)
+      } else {
+        const el = document.querySelector(id)
+        if (el) el.scrollIntoView({ behavior: 'smooth' })
       }
+    } else {
+      navigate(href)
     }
+  }
+
+  const handleLogout = () => {
+    signOut()
+    navigate('/login')
   }
 
   return (
@@ -38,18 +55,20 @@ export default function Layout() {
       <header
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-          isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6',
+          isScrolled || location.pathname !== '/'
+            ? 'bg-white/95 backdrop-blur-md shadow-sm py-4'
+            : 'bg-transparent py-6',
         )}
       >
         <div className="container mx-auto px-4 flex items-center justify-between">
           <div
             className="flex items-center gap-2 cursor-pointer"
-            onClick={() => scrollToSection('#inicio')}
+            onClick={() => scrollToSection('/#inicio')}
           >
             <span
               className={cn(
                 'text-2xl font-bold tracking-tight transition-colors duration-300',
-                isScrolled ? 'text-primary' : 'text-white',
+                isScrolled || location.pathname !== '/' ? 'text-primary' : 'text-white',
               )}
             >
               Proi Soluções
@@ -63,18 +82,42 @@ export default function Layout() {
                 onClick={() => scrollToSection(link.href)}
                 className={cn(
                   'text-sm font-medium transition-colors hover:opacity-70',
-                  isScrolled ? 'text-foreground' : 'text-white',
+                  isScrolled || location.pathname !== '/' ? 'text-foreground' : 'text-white',
                 )}
               >
                 {link.name}
               </button>
             ))}
+            {user ? (
+              <Button
+                onClick={handleLogout}
+                variant={isScrolled || location.pathname !== '/' ? 'outline' : 'ghost'}
+                className={
+                  isScrolled || location.pathname !== '/'
+                    ? ''
+                    : 'text-white hover:text-white/80 hover:bg-white/10'
+                }
+              >
+                Sair
+              </Button>
+            ) : (
+              <Link
+                to="/login"
+                className={cn(
+                  'text-sm font-medium transition-colors hover:opacity-70',
+                  isScrolled || location.pathname !== '/' ? 'text-foreground' : 'text-white',
+                )}
+              >
+                Login
+              </Link>
+            )}
             <Button
-              onClick={() => scrollToSection('#contato')}
-              variant={isScrolled ? 'default' : 'secondary'}
+              onClick={() => navigate('/contato')}
+              variant={isScrolled || location.pathname !== '/' ? 'default' : 'secondary'}
               className={cn(
                 'rounded-full px-6',
-                !isScrolled && 'bg-white text-primary hover:bg-white/90',
+                !(isScrolled || location.pathname !== '/') &&
+                  'bg-white text-primary hover:bg-white/90',
               )}
             >
               Agende uma Consulta
@@ -83,9 +126,19 @@ export default function Layout() {
 
           <button className="md:hidden p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? (
-              <X className={cn('h-6 w-6', isScrolled ? 'text-foreground' : 'text-white')} />
+              <X
+                className={cn(
+                  'h-6 w-6',
+                  isScrolled || location.pathname !== '/' ? 'text-foreground' : 'text-white',
+                )}
+              />
             ) : (
-              <Menu className={cn('h-6 w-6', isScrolled ? 'text-foreground' : 'text-white')} />
+              <Menu
+                className={cn(
+                  'h-6 w-6',
+                  isScrolled || location.pathname !== '/' ? 'text-foreground' : 'text-white',
+                )}
+              />
             )}
           </button>
         </div>
@@ -102,7 +155,22 @@ export default function Layout() {
                   {link.name}
                 </button>
               ))}
-              <Button onClick={() => scrollToSection('#contato')} className="mt-2 w-full">
+              {user ? (
+                <button
+                  onClick={handleLogout}
+                  className="text-left text-lg font-medium text-destructive py-2 border-b border-gray-100 last:border-0"
+                >
+                  Sair
+                </button>
+              ) : (
+                <button
+                  onClick={() => navigate('/login')}
+                  className="text-left text-lg font-medium text-foreground py-2 border-b border-gray-100 last:border-0"
+                >
+                  Login
+                </button>
+              )}
+              <Button onClick={() => navigate('/contato')} className="mt-2 w-full">
                 Agende uma Consulta
               </Button>
             </nav>
@@ -137,7 +205,7 @@ export default function Layout() {
             <ul className="space-y-3 text-sm text-slate-400">
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4" />
-                (11) 9999-9999
+                (11) 99999-9999
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4" />
@@ -145,7 +213,7 @@ export default function Layout() {
               </li>
               <li className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
-                São Paulo, SP
+                São José dos Campos, SP
               </li>
             </ul>
           </div>
@@ -155,7 +223,7 @@ export default function Layout() {
             <ul className="space-y-2 text-sm text-slate-400">
               <li>
                 <button
-                  onClick={() => scrollToSection('#inicio')}
+                  onClick={() => scrollToSection('/#inicio')}
                   className="hover:text-white transition-colors"
                 >
                   Início
@@ -163,7 +231,7 @@ export default function Layout() {
               </li>
               <li>
                 <button
-                  onClick={() => scrollToSection('#servicos')}
+                  onClick={() => scrollToSection('/#servicos')}
                   className="hover:text-white transition-colors"
                 >
                   Serviços
@@ -171,7 +239,7 @@ export default function Layout() {
               </li>
               <li>
                 <button
-                  onClick={() => scrollToSection('#sobre')}
+                  onClick={() => scrollToSection('/#sobre')}
                   className="hover:text-white transition-colors"
                 >
                   Sobre
