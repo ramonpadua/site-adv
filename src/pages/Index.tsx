@@ -184,8 +184,8 @@ export default function Index() {
           <div className="flex flex-col md:flex-row gap-12 items-center">
             <div className="w-full md:w-1/2">
               <img
-                src="https://img.usecurling.com/p/800/600?q=law%20office&color=gray&dpr=2"
-                alt="Nosso Escritório"
+                src="https://img.usecurling.com/p/800/600?q=pigeon&dpr=2"
+                alt="Pombo"
                 className="rounded-xl shadow-lg object-cover aspect-video w-full"
               />
             </div>
