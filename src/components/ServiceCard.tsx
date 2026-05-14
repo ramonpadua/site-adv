@@ -30,7 +30,7 @@ export function ServiceCard({ service, index }: { service: Servico; index: numbe
     >
       <Card className="h-full flex flex-col group hover:shadow-elevation hover:-translate-y-1 transition-all duration-300 border-none bg-white shadow-subtle">
         <CardHeader>
-          <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+          <div className="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center mb-4 text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors duration-300">
             <Icon className="w-6 h-6" />
           </div>
           <CardTitle className="text-xl font-bold text-foreground">{service.titulo}</CardTitle>
