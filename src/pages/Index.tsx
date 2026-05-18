@@ -69,7 +69,11 @@ export default function Index() {
                 Resultados sólidos construídos com autoridade e ética.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="text-base px-8 h-14" asChild>
+                <Button
+                  size="lg"
+                  className="bg-green-600 hover:bg-green-700 text-white text-base px-8 h-14"
+                  asChild
+                >
                   <Link to="/contato">
                     Agende uma Consulta
                     <ArrowRight className="ml-2 w-5 h-5" />
