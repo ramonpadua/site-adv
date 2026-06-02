@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils'
 import { getServicos, type Servico } from '@/services/servicos'
 import { ServiceCard } from '@/components/ServiceCard'
 import { Link } from 'react-router-dom'
-import chartImage from '../assets/renda-media-por-classe-social-em-petropolis-79491.png'
+import chartImage from '../assets/distribuicao-de-receita-por-linha-top-10-a0367.jpg'
 
 export default function Index() {
   const [status, setStatus] = useState<'loading' | 'error' | 'empty' | 'success'>('loading')
@@ -190,7 +190,7 @@ export default function Index() {
             <div className="w-full md:w-1/2">
               <img
                 src={chartImage}
-                alt="Gráfico de Renda Média por Classe Social em Petrópolis"
+                alt="Distribuição de Receita por Linha Top 10"
                 className="rounded-xl shadow-lg object-cover aspect-video w-full"
               />
             </div>
