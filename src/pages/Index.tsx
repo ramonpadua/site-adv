@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils'
 import { getServicos, type Servico } from '@/services/servicos'
 import { ServiceCard } from '@/components/ServiceCard'
 import { Link } from 'react-router-dom'
+import chartImage from '../assets/renda-media-por-classe-social-em-petropolis-79491.png'
 
 export default function Index() {
   const [status, setStatus] = useState<'loading' | 'error' | 'empty' | 'success'>('loading')
@@ -188,8 +189,8 @@ export default function Index() {
           <div className="flex flex-col md:flex-row gap-12 items-center">
             <div className="w-full md:w-1/2">
               <img
-                src="https://img.usecurling.com/p/800/600?q=pigeon&dpr=2"
-                alt="Pombo"
+                src={chartImage}
+                alt="Gráfico de Renda Média por Classe Social em Petrópolis"
                 className="rounded-xl shadow-lg object-cover aspect-video w-full"
               />
             </div>
