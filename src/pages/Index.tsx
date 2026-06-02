@@ -72,7 +72,7 @@ export default function Index() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
                   size="lg"
-                  className="bg-green-600 hover:bg-green-700 text-white text-base px-8 h-14"
+                  className="bg-red-600 hover:bg-red-700 text-white text-base px-8 h-14"
                   asChild
                 >
                   <Link to="/contato">
