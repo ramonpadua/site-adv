@@ -1,4 +1,12 @@
-import { Briefcase, ShieldCheck, Cog, HelpCircle, ChevronRight } from 'lucide-react'
+import {
+  Briefcase,
+  ShieldCheck,
+  Cog,
+  HelpCircle,
+  ChevronRight,
+  FileText,
+  Gavel,
+} from 'lucide-react'
 import {
   Card,
   CardContent,
@@ -16,6 +24,8 @@ const IconMap: Record<string, any> = {
   briefcase: Briefcase,
   'shield-check': ShieldCheck,
   cog: Cog,
+  'file-text': FileText,
+  gavel: Gavel,
 }
 
 export function ServiceCard({ service, index }: { service: Servico; index: number }) {
